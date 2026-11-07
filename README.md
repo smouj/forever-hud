@@ -175,7 +175,7 @@ Limitaciones conocidas de la version 1.0:
 | Sintaxis Lua de los 9 ficheros | OK |
 | Pruebas headless con API simulada | 30 de 30 |
 | Estructura del TOC y ficheros declarados | OK |
-| ZIP instalable e integridad | OK, 10 entradas |
+| ZIP instalable e integridad | OK, 12 entradas |
 | CI en GitHub Actions | verde |
 | Release con ZIP y SHA256SUMS | v1.0.0 |
 | Pruebas dentro del cliente | pendientes |
