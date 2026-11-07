@@ -43,6 +43,7 @@ end
 
 local function StopBar(frame)
   frame.casting = false
+  if frame.spark then frame.spark:Hide() end
   frame:Hide()
 end
 
@@ -127,6 +128,13 @@ local function CreateCastBar(unit)
   time:SetJustifyH("RIGHT")
   frame.timeText = time
 
+  local spark = frame:CreateTexture(nil, "OVERLAY", nil, 7)
+  spark:SetTexture(ns.path .. "Media\\spark")
+  spark:SetBlendMode("ADD")
+  spark:SetSize(14, 26)
+  spark:Hide()
+  frame.spark = spark
+
   frame:SetScript("OnUpdate", function(self, elapsed)
     if not self.casting then return end
     self.elapsed = (self.elapsed or 0) + elapsed
@@ -142,6 +150,12 @@ local function CreateCastBar(unit)
       self.timeText:SetText(string.format("%.1f", remaining))
     else
       self.timeText:SetText("")
+    end
+    if self.spark then
+      local width = (self:GetWidth() or 280) - 4
+      self.spark:ClearAllPoints()
+      self.spark:SetPoint("CENTER", self.bar, "LEFT", progress * width, 0)
+      self.spark:Show()
     end
     if progress >= 1 then
       if ns.preview.active then
@@ -174,6 +188,22 @@ local function ApplyBar(frame, cfg, prefix)
 
   frame.text:SetFont(ns.font, math.max(9, math.floor(cfg.height * 0.55)), "OUTLINE")
   frame.timeText:SetFont(ns.font, math.max(9, math.floor(cfg.height * 0.55)), "OUTLINE")
+  frame.timeText:SetTextColor(ns.theme.accent[1], ns.theme.accent[2], ns.theme.accent[3], 1)
+
+  ns:ApplyBackdrop(frame, ns.theme.bg, ns.theme.borderHi)
+  ns:AddCornerAccents(frame)
+  ns:UpdateAccents(frame)
+  frame.bar:SetStatusBarTexture(ns:BarTexture())
+  if frame.unit == "player" then
+    local accent = ns.theme.accent
+    frame.bar:SetStatusBarColor(accent[1] * 0.92, accent[2] * 0.92, accent[3] * 0.92, 1)
+  else
+    frame.bar:SetStatusBarColor(0.66, 0.26, 0.22, 1)
+  end
+  if frame.spark then
+    frame.spark:SetSize(math.max(12, math.floor(cfg.height * 0.9)), cfg.height + 8)
+    frame.spark:SetVertexColor(ns.theme.accent[1], ns.theme.accent[2], ns.theme.accent[3], 0.9)
+  end
 
   local position = {
     point = cfg[prefix .. "Point"] or "CENTER",

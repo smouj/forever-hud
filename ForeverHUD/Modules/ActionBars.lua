@@ -204,14 +204,20 @@ function module:Apply()
   bar:Show()
 
   if cfg.background then
-    if not bar.__backdropApplied then
-      ns:ApplyBackdrop(bar)
-      bar.__backdropApplied = true
-    end
-    bar:SetBackdropColor(ns.theme.bg[1], ns.theme.bg[2], ns.theme.bg[3], 0.85)
+    ns:ApplyBackdrop(bar)
+    bar.__backdropApplied = true
+    bar:SetBackdropColor(ns.theme.bg[1], ns.theme.bg[2], ns.theme.bg[3], 0.92)
   elseif bar.__backdropApplied then
     bar:SetBackdrop(nil)
     bar.__backdropApplied = false
+  end
+
+  ns:AddCornerAccents(bar)
+  ns:UpdateAccents(bar)
+  if bar.topLine then
+    local accent = ns.theme.accent
+    bar.topLine:SetColorTexture(accent[1], accent[2], accent[3], 0.55)
+    bar.topLine:SetShown(ns:Get("general.ornaments", true))
   end
 
   local index = 0
@@ -228,6 +234,7 @@ function module:Apply()
         end
         button.slot = slot
         button.binding = binding
+        ns:ApplyBackdrop(button, { 0.02, 0.02, 0.03, 0.72 }, ns.theme.border)
         button:SetAttribute("action", slot)
         button:SetSize(size, size)
         button:ClearAllPoints()
@@ -304,6 +311,12 @@ function module:Initialize()
   bar:SetFrameStrata("MEDIUM")
   ns:ApplyBackdrop(bar)
   bar.__backdropApplied = true
+  local topLine = bar:CreateTexture(nil, "OVERLAY", nil, 6)
+  topLine:SetColorTexture(1, 1, 1, 0.5)
+  topLine:SetPoint("TOPLEFT", bar, "TOPLEFT", 6, -4)
+  topLine:SetPoint("TOPRIGHT", bar, "TOPRIGHT", -6, -4)
+  topLine:SetHeight(1)
+  bar.topLine = topLine
   bars.main = bar
 
   for index = 1, 36 do

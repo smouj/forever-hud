@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512" role="img" aria-label="ForeverHUD - escudo y runa, blanco, fondo transparente">
+
+  <!-- Shield: sculpted outer contour, transparent central field -->
+  <path fill="#FFFFFF" fill-rule="evenodd" d="M256 27 L428 88 Q435 91 435 101 L435 264 Q435 290 419 307 L274 466 Q256 486 256 486 Q256 486 238 466 L93 307 Q77 290 77 264 L77 101 Q77 91 84 88 Z M256 58 L105 111 L105 265 Q105 281 117 294 L256 447 L395 294 Q407 281 407 265 L407 111 Z"/>
+  <!-- Shoulders echo medieval engraved plates; every cut remains white -->
+  <path fill="#FFFFFF" d="M134 137 L178 123 L182 137 L149 148 L149 175 L134 175 Z M378 137 L334 123 L330 137 L363 148 L363 175 L378 175 Z"/>
+  <!-- Angular runic stem, a precise centre reference -->
+  <path fill="#FFFFFF" d="M245 132 L267 132 L267 326 L256 338 L245 326 Z"/>
+  <!-- Signature bilateral rune: echoes the existing symbol without ornamental noise -->
+  <path fill="#FFFFFF" d="M245 159 L189 202 L189 230 L210 230 L210 214 L256 179 Z"/>
+  <path fill="#FFFFFF" d="M267 159 L323 202 L323 230 L302 230 L302 214 L256 179 Z"/>
+  <path fill="#FFFFFF" d="M245 248 L203 278 L203 298 L223 298 L223 286 L256 264 Z"/>
+  <path fill="#FFFFFF" d="M267 248 L309 278 L309 298 L289 298 L289 286 L256 264 Z"/>
+  <!-- Iconic gem: white enclosure, transparent centre -->
+  <path fill="#FFFFFF" fill-rule="evenodd" d="M256 348 L290 385 L256 423 L222 385 Z M256 366 L238 385 L256 405 L274 385 Z"/>
+  <!-- Gem's upper/lower facets, reading at 32px as a single sharp diamond -->
+  <path d="M256 349 L256 362 M256 408 L256 421" stroke="#FFFFFF" stroke-width="5"/>
+
+</svg>

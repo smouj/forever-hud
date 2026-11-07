@@ -4,6 +4,37 @@ Todas las versiones relevantes de ForeverHUD. Formato basado en
 [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/) y versionado
 [semantico](https://semver.org/lang/es/).
 
+## [1.1.0] - 2026-11-07
+
+### Anadido
+
+- Nueva identidad visual: icono, banner y simbolo oficiales del kit de marca.
+- Paleta "Acero" por defecto y cinco colores de acento (Acero, Oro, Hielo,
+  Sangre y Esmeralda) aplicados a bordes, esquinas y barras de lanzamiento.
+- Seccion **Estilo** en el panel con tres disenos de un clic: Clasico, Compacto
+  y Minimo.
+- Texturas de barra suaves o planas, con opcion de adornos en las esquinas.
+- Chispa de progreso en las barras de lanzamiento.
+- Esquinas ornamentales en marcos, barras de lanzamiento y barra de accion.
+
+### Cambiado
+
+- Paleta general del HUD a azul acero, mas legible sobre fondos oscuros.
+- README reescrito para jugadores: instalacion en tres pasos, personalizacion y
+  preguntas frecuentes, sin secciones tecnicas.
+- Capturas y vista previa actualizadas al nuevo estilo.
+
+### Corregido
+
+- Las barras de lanzamiento usaban el color verde por defecto; ahora la del
+  jugador usa el color de acento y la del objetivo un rojo apagado.
+- Los textos largos de los marcos ya no se solapan: nombre arriba, nivel y vida
+  en la linea inferior.
+
+### Pruebas
+
+- 32 pruebas headless (antes 30), incluyendo disenos y color de acento.
+
 ## [1.0.0] - 2026-11-07
 
 Primera version publica.

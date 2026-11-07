@@ -9,7 +9,7 @@ comprobacion para la segunda.
 | Comprobacion | Comando | Estado |
 | --- | --- | --- |
 | Sintaxis Lua 5.1 de todos los ficheros | bash scripts/check.sh | verde |
-| 30 pruebas headless con API simulada | lua5.1 tests/run_tests.lua | verde |
+| 32 pruebas headless con API simulada | lua5.1 tests/run_tests.lua | verde |
 | Estructura del TOC y ficheros declarados | incluida en las pruebas | verde |
 | Empaquetado instalable | bash scripts/build.sh | verde |
 | Integridad del ZIP | testzip de Python | verde |

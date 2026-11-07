@@ -134,11 +134,20 @@ local function CreateUnitFrame(unit)
   portrait:SetTexCoord(0.08, 0.92, 0.08, 0.92)
   frame.portrait = portrait
 
-  local portraitBorder = frame:CreateTexture(nil, "OVERLAY")
-  portraitBorder:SetColorTexture(ns.theme.border[1], ns.theme.border[2], ns.theme.border[3], 1)
-  portraitBorder:SetPoint("TOPLEFT", frame, "TOPLEFT", 1, -1)
-  portraitBorder:SetSize(44, 1)
-  frame.portraitBorder = portraitBorder
+  local portraitEdges = {}
+  local function edge(pointA, pointB, width, height)
+    local texture = frame:CreateTexture(nil, "OVERLAY", nil, 6)
+    texture:SetPoint(pointA, portrait)
+    texture:SetPoint(pointB, portrait)
+    if width then texture:SetWidth(width) end
+    if height then texture:SetHeight(height) end
+    portraitEdges[#portraitEdges + 1] = texture
+  end
+  edge("TOPLEFT", "TOPRIGHT", nil, 1)
+  edge("BOTTOMLEFT", "BOTTOMRIGHT", nil, 1)
+  edge("TOPLEFT", "BOTTOMLEFT", 1, nil)
+  edge("TOPRIGHT", "BOTTOMRIGHT", 1, nil)
+  frame.portraitEdges = portraitEdges
 
   local name = ns:CreateText(frame, 12, ns.theme.text, "OUTLINE")
   name:SetPoint("TOPLEFT", health, "TOPLEFT", 7, -3)
@@ -199,12 +208,16 @@ local function ApplyFrame(unit, frame, cfg)
 
   if cfg.portrait then
     frame.portrait:Show()
-    frame.portraitBorder:Show()
     frame.portrait:SetSize(portraitSize, portraitSize)
-    frame.portraitBorder:SetSize(portraitSize, 1)
+    local edgeColor = ns.theme.accent2
+    for index = 1, #frame.portraitEdges do
+      local texture = frame.portraitEdges[index]
+      texture:SetColorTexture(edgeColor[1], edgeColor[2], edgeColor[3], 0.9)
+      texture:Show()
+    end
   else
     frame.portrait:Hide()
-    frame.portraitBorder:Hide()
+    for index = 1, #frame.portraitEdges do frame.portraitEdges[index]:Hide() end
   end
 
   frame.name:SetShown(cfg.showName and true or false)
@@ -217,6 +230,12 @@ local function ApplyFrame(unit, frame, cfg)
   frame.name:SetFont(ns.font, math.max(10, math.floor(cfg.height * 0.27)), "OUTLINE")
   frame.healthText:SetFont(ns.font, math.max(8, math.floor(cfg.height * 0.21)), "OUTLINE")
   frame.level:SetFont(ns.font, math.max(8, math.floor(cfg.height * 0.19)), "OUTLINE")
+
+  ns:ApplyBackdrop(frame)
+  ns:AddCornerAccents(frame)
+  ns:UpdateAccents(frame)
+  frame.health:SetStatusBarTexture(ns:BarTexture())
+  frame.power:SetStatusBarTexture(ns:BarTexture())
 
   ns:ApplyPosition(frame, cfg, "", "CENTER")
   frame:EnableMouse((cfg.tooltip == true) or (not ns:Get("general.locked", true)))

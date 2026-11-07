@@ -1,0 +1,142 @@
+{
+  "ForeverHUD/Media/icon.tga": {
+    "bytes": 65580,
+    "sha256": "6caa7652746ac0ddd70c94a88b76fd6fe80d997fe887371cc12982e4cf9a30a2"
+  },
+  "INTEGRAR_EN_GITHUB.md": {
+    "bytes": 1916,
+    "sha256": "021db5e3aa7d22e797826ab790e409518165fa0beb014404523a966573dbc533"
+  },
+  "assets/banner.svg": {
+    "bytes": 17919,
+    "sha256": "cadbd664aaa7ae34833bf64d024470a088e7b8c3fa97d08a29b450338a29a460"
+  },
+  "assets/icon.png": {
+    "bytes": 14758,
+    "sha256": "19fbbda28b3ee6c0d05da0edb8d4f3234b28b1fa2aeed96fb123c1064df94969"
+  },
+  "assets/logo.svg": {
+    "bytes": 1657,
+    "sha256": "8e4632cd0eb444d552a4d966904034cc74687a55d94d71d5edd82e8cf6229924"
+  },
+  "brand/docs/BRAND_GUIDELINES.md": {
+    "bytes": 4531,
+    "sha256": "93818208851f45eb35f764b0b1976db77b3e6c1f4ea02590f8f01d24169142d4"
+  },
+  "brand/docs/ForeverHUD_Manual_Marca.pdf": {
+    "bytes": 161714,
+    "sha256": "cc282a3d56eaa1b3bbd38e560b0393422db884bb0cabca067aaec02365dcc8b5"
+  },
+  "brand/exports/foreverhud-icon.ico": {
+    "bytes": 21309,
+    "sha256": "d8d5958f083669fb5f877e77ec23842363889a57ac507b37e3f260c38ea718d4"
+  },
+  "brand/exports/foreverhud-lockup-horizontal-white.png": {
+    "bytes": 27570,
+    "sha256": "bd7f8a78b6aa137b8e1ee345631f17b6bda3f88093b26a1b5c4557bfc73a42a9"
+  },
+  "brand/exports/foreverhud-lockup-stacked-white.png": {
+    "bytes": 29184,
+    "sha256": "fa56e902b9ea489474ce08d1a8434581f1e97ade1d69854ecdcda548331d7960"
+  },
+  "brand/exports/foreverhud-symbol-white-1024.png": {
+    "bytes": 38104,
+    "sha256": "551e56b322b716b00d6cb90443b1e012bbb1a8495900c47b2288a0390eac99f6"
+  },
+  "brand/exports/foreverhud-symbol-white-1024.webp": {
+    "bytes": 11594,
+    "sha256": "4282cf62c998cf006ee1c2ac8ef8a181f3e283ba58296c02e7fd681aee94d998"
+  },
+  "brand/exports/foreverhud-symbol-white-128.png": {
+    "bytes": 3223,
+    "sha256": "71f28d51295b45f554a827a3c545c100a7149812973753dd472a457bdd46bf1d"
+  },
+  "brand/exports/foreverhud-symbol-white-16.png": {
+    "bytes": 407,
+    "sha256": "fa15901d10a30768ea55a34f6ac43b3bd7bd44277ee2c2838dbe425d761eba65"
+  },
+  "brand/exports/foreverhud-symbol-white-24.png": {
+    "bytes": 621,
+    "sha256": "1426f1218253fb81de56d561b043bf106f9d6a92a056bdd2848055445c56f352"
+  },
+  "brand/exports/foreverhud-symbol-white-256.png": {
+    "bytes": 6596,
+    "sha256": "769a87d4243b694ec68b7156cc9f2fb76573fcbc3f0dd4bfd721e1f3aa314a21"
+  },
+  "brand/exports/foreverhud-symbol-white-32.png": {
+    "bytes": 776,
+    "sha256": "ab6d91d9a5e15b57e24db47373e10866e25c2133eb73a4fcbf597b264d05d227"
+  },
+  "brand/exports/foreverhud-symbol-white-48.png": {
+    "bytes": 1178,
+    "sha256": "1c28ddac7a6f0ac1b02e1862aff6a8b89cf04e6fb63a343299f9d9f748cceeda"
+  },
+  "brand/exports/foreverhud-symbol-white-512.png": {
+    "bytes": 14758,
+    "sha256": "19fbbda28b3ee6c0d05da0edb8d4f3234b28b1fa2aeed96fb123c1064df94969"
+  },
+  "brand/exports/foreverhud-symbol-white-64.png": {
+    "bytes": 1643,
+    "sha256": "eb190352c229333b57c48d80c6471a0c89efaa4d02e8ea6fae2e2c0312ac8675"
+  },
+  "brand/masters/foreverhud-lockup-horizontal-white.svg": {
+    "bytes": 14025,
+    "sha256": "e1995aa240cc15ff7c82185405f070907b8ceeba8f4e353cfd7f246725f61f65"
+  },
+  "brand/masters/foreverhud-lockup-stacked-white.svg": {
+    "bytes": 13708,
+    "sha256": "933d6ec4badd70f409bf7e27318bc9ccb4341ab83b02363f492b2197c6bcd5ca"
+  },
+  "brand/masters/foreverhud-symbol-white.svg": {
+    "bytes": 1657,
+    "sha256": "8e4632cd0eb444d552a4d966904034cc74687a55d94d71d5edd82e8cf6229924"
+  },
+  "brand/masters/foreverhud-wordmark-white.svg": {
+    "bytes": 3629,
+    "sha256": "ef476a03aa6bf4961edfec051c68ce121c17db24620d027bdcd4ed501f3839b1"
+  },
+  "brand/preview/ForeverHUD_Brand_Overview.png": {
+    "bytes": 178057,
+    "sha256": "3ea2a31e9ce227afee4a5b881c9b8b08d8b7dcb67521ceb9cccb3d0a7a153169"
+  },
+  "brand/preview/index.html": {
+    "bytes": 4126,
+    "sha256": "f74d9b5f5eddf226353a56d8f37974931e3ba006cd1b8c86e0ca195db70c005f"
+  },
+  "brand/social/avatar-dark-tile-512.png": {
+    "bytes": 23592,
+    "sha256": "d2e81cd41fbd38f8c18de2897d9c48a869238483b6e27388fc7e2b3ee58ceec5"
+  },
+  "brand/social/avatar-dark-tile.svg": {
+    "bytes": 1745,
+    "sha256": "5a13a140c385d69a3e8bcd5eb90129ec5501287fa614742c2feb4998a7108565"
+  },
+  "brand/social/cover-transparent-white-1500x500.png": {
+    "bytes": 30777,
+    "sha256": "feb78448cf0be9abeea5674bd40c46456dc8fd2f977de142e1cdafb8bbedba83"
+  },
+  "brand/social/cover-transparent-white.svg": {
+    "bytes": 17089,
+    "sha256": "4307bd8773302a68a755398d18c4ab760fbb3730014f611a257617e5fda29665"
+  },
+  "brand/social/github-readme-banner-1280x320.png": {
+    "bytes": 63050,
+    "sha256": "f4fe9e336b60356809ef2eab50ac2889fa39fd340be39083518dd8b0ebef130d"
+  },
+  "brand/social/open-graph-1200x630.png": {
+    "bytes": 59380,
+    "sha256": "fd8697c0fedccba385d8fed77e769951cca53c8c9346d1094bef4ab0a26a66ac"
+  },
+  "brand/social/open-graph-1200x630.svg": {
+    "bytes": 17748,
+    "sha256": "e67b09452b1e3d20bfb50a3507d066fd170b9385a145ee233d46f2738bd99b3d"
+  },
+  "brand/tools/export_brand.py": {
+    "bytes": 1898,
+    "sha256": "b6a99646d7e5a1d74dd1b09c545206b4ff19802cedb8d533d651e453bf0f1c79"
+  },
+  "scripts/make_icon.py": {
+    "bytes": 734,
+    "sha256": "5d5947fae98eaa40530b321dab253308704ba97c70498435353c2f09a5b19ad7"
+  }
+}

@@ -4,7 +4,8 @@
 
 | Version | Soporte |
 | --- | --- |
-| 1.0.x | Si |
+| 1.1.x | Si |
+| 1.0.x | Parcial |
 
 ## Como reportar una vulnerabilidad
 

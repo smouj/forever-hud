@@ -18,7 +18,7 @@ se pueda verificar sin abrir el juego.
 4. Ejecuta:
 
         bash scripts/check.sh          # sintaxis de todos los .lua
-        lua5.1 tests/run_tests.lua     # 30 pruebas headless
+        lua5.1 tests/run_tests.lua     # 32 pruebas headless
         bash scripts/build.sh          # ZIP instalable en dist/
 
 5. Abre un pull request con el resultado de los tres comandos.

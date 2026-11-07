@@ -6,14 +6,14 @@
 <title>ForeverHUD · Vista previa del diseño</title>
 <style>
   :root{
-    --bg:#08090d;
-    --panel:#0d0e13;
-    --panel-2:#11131a;
-    --border:#4a3d29;
-    --border-hi:#8b6b38;
-    --accent:#d9ad52;
-    --text:#efeadd;
-    --muted:#98917f;
+    --bg:#080c12;
+    --panel:#0c1119;
+    --panel-2:#111823;
+    --border:#33414f;
+    --border-hi:#7e93ad;
+    --accent:#cddaea;
+    --text:#e9eef4;
+    --muted:#93a3b5;
     --hp:#f58cba;
     --hp-dark:#8c3f5f;
     --target:#c23a2f;
@@ -30,11 +30,11 @@
   /* ---------- scene ---------- */
   .scene{position:absolute;inset:0;z-index:0}
   .scene .sky{position:absolute;inset:0;background:
-     radial-gradient(900px 520px at 50% 18%, rgba(88,64,32,.55), transparent 70%),
-     radial-gradient(1200px 700px at 50% 108%, rgba(24,34,48,.85), transparent 72%),
-     linear-gradient(180deg,#0b0d14 0%,#0a0c12 42%,#06070b 100%);}
+     radial-gradient(900px 520px at 50% 18%, rgba(80,104,132,.50), transparent 70%),
+     radial-gradient(1200px 700px at 50% 108%, rgba(20,32,46,.90), transparent 72%),
+     linear-gradient(180deg,#0a1019 0%,#080d15 42%,#05080c 100%);}
   .scene .sun{position:absolute;left:50%;top:34%;width:320px;height:320px;transform:translate(-50%,-50%);
-     border-radius:50%;background:radial-gradient(circle,rgba(217,173,82,.28),rgba(217,173,82,.07) 55%,transparent 70%);
+     border-radius:50%;background:radial-gradient(circle,rgba(160,196,230,.24),rgba(160,196,230,.06) 55%,transparent 70%);
      filter:blur(2px)}
   .scene svg{position:absolute;inset:0;width:100%;height:100%}
   .scene .fog{position:absolute;inset:0;background:
@@ -49,9 +49,22 @@
     border:1px solid var(--border);
     box-shadow:inset 0 0 0 1px rgba(0,0,0,.65), inset 0 1px 0 rgba(255,255,255,.05);}
   .unit{width:286px}
-  .unit .frame{display:flex;padding:1px;background:linear-gradient(180deg,#1b1d25,#0b0c10);border:1px solid var(--border)}
+  .unit .frame{display:flex;padding:1px;border:1px solid var(--border);
+    background-color:#0b1017;
+    background-image:
+      linear-gradient(var(--accent),var(--accent)), linear-gradient(var(--accent),var(--accent)),
+      linear-gradient(var(--accent),var(--accent)), linear-gradient(var(--accent),var(--accent)),
+      linear-gradient(var(--accent),var(--accent)), linear-gradient(var(--accent),var(--accent)),
+      linear-gradient(var(--accent),var(--accent)), linear-gradient(var(--accent),var(--accent)),
+      linear-gradient(180deg,#18222e,#0a0f16);
+    background-size: 7px 1px, 1px 7px, 7px 1px, 1px 7px, 7px 1px, 1px 7px, 7px 1px, 1px 7px, auto;
+    background-position: left 2px top 2px, left 2px top 2px, right 2px top 2px, right 2px top 2px,
+      left 2px bottom 2px, left 2px bottom 2px, right 2px bottom 2px, right 2px bottom 2px, 0 0;
+    background-repeat: no-repeat}
   .unit .bars{flex:1 1 auto;min-width:0;display:flex;flex-direction:column}
-  .bar{position:relative;height:33px;background:#05060a;overflow:hidden}
+  .bar{position:relative;height:33px;background:#04070b;overflow:hidden}
+  .bar::after{content:"";position:absolute;inset:0;pointer-events:none;
+    box-shadow:inset 0 1px 0 rgba(255,255,255,.16), inset 0 -1px 0 rgba(0,0,0,.55)}
   .bar .fill{position:absolute;inset:0 auto 0 0;width:100%;}
   .bar .gloss{position:absolute;inset:0 0 auto 0;height:45%;background:linear-gradient(180deg,rgba(255,255,255,.20),rgba(255,255,255,0))}
   .bar .edge{position:absolute;inset:0 0 auto 0;height:1px;background:rgba(255,255,255,.22)}
@@ -67,9 +80,9 @@
   .unit.target .bar .fill{background:linear-gradient(180deg,#e05648,var(--target) 45%,var(--target-dark))}
   .portrait{width:42px;flex:0 0 42px;align-self:stretch;border-right:1px solid #000;position:relative;overflow:hidden;
     background:
-      radial-gradient(circle at 50% 34%, rgba(214,190,140,.55) 0 10%, rgba(214,190,140,0) 11%),
-      radial-gradient(ellipse 36% 22% at 50% 84%, rgba(180,155,105,.42) 0 70%, rgba(180,155,105,0) 72%),
-      linear-gradient(135deg,#241d15,#0d0b08);}
+      radial-gradient(circle at 50% 34%, rgba(198,216,236,.55) 0 10%, rgba(198,216,236,0) 11%),
+      radial-gradient(ellipse 36% 22% at 50% 84%, rgba(150,172,196,.40) 0 70%, rgba(150,172,196,0) 72%),
+      linear-gradient(135deg,#1a2430,#080c12);}
   .portrait::after{content:"";position:absolute;inset:0;background:radial-gradient(circle at 50% 35%,rgba(217,173,82,.35),transparent 60%)}
   .unit.no-portrait .portrait{display:none}
 
@@ -95,10 +108,13 @@
   /* ---------- cast bars ---------- */
   .castbar{width:286px;height:20px;position:absolute;z-index:6}
   .castbar .frame{position:relative;height:100%;border:1px solid var(--border-hi);background:#07080c;display:flex;align-items:center;overflow:hidden}
-  .castbar .fill{position:absolute;inset:1px auto 1px 1px;width:62%;background:linear-gradient(180deg,#f0c874,#c79a3d 55%,#7d5a1c)}
-  .castbar .fill.red{background:linear-gradient(180deg,#e07a5f,#b23a28 55%,#5f1a12)}
+  .castbar .fill{position:absolute;inset:1px auto 1px 1px;width:62%;background:linear-gradient(180deg,#eef5fc,#b9cbdd 55%,#6d8093)}
+  .castbar .fill.red{background:linear-gradient(180deg,#d07a63,#a53e2d 55%,#4e1a12)}
   .castbar .label{position:relative;z-index:2;font-size:11px;padding-left:8px;text-shadow:0 1px 2px #000;white-space:nowrap}
   .castbar .time{position:relative;z-index:2;margin-left:auto;padding-right:8px;font-size:11px;color:var(--accent);font-variant-numeric:tabular-nums}
+  .castbar .spark{position:absolute;top:50%;width:16px;height:34px;transform:translate(-50%,-50%);
+    background:radial-gradient(closest-side,rgba(220,235,250,.95),rgba(220,235,250,0));
+    filter:blur(1px);z-index:3;pointer-events:none}
   .castbar.player{left:50%;top:calc(50% + 222px);transform:translate(-50%,-50%)}
   .castbar.target{left:50%;top:calc(50% - 222px);transform:translate(-50%,-50%)}
   .castbar .icon{width:18px;height:18px;margin-left:1px;position:relative;z-index:2;background:linear-gradient(135deg,#ffb347,#7d3b12);border-right:1px solid rgba(0,0,0,.6)}
@@ -121,9 +137,21 @@
   .aura .dur{position:absolute;left:0;right:0;bottom:-1px;text-align:center;font-size:9px;background:rgba(0,0,0,.55);color:#d8d2c4}
 
   /* ---------- action bar ---------- */
-  .actionbar{left:50%;top:calc(50% + 342px);transform:translate(-50%,-50%);padding:6px;background:linear-gradient(180deg,rgba(14,15,20,.92),rgba(7,8,11,.92));border:1px solid var(--border)}
+  .actionbar{left:50%;top:calc(50% + 342px);transform:translate(-50%,-50%);padding:7px;border:1px solid var(--border);
+    background-color:rgba(8,12,18,.94);
+    background-image:
+      linear-gradient(var(--accent),var(--accent)), linear-gradient(var(--accent),var(--accent)),
+      linear-gradient(var(--accent),var(--accent)), linear-gradient(var(--accent),var(--accent)),
+      linear-gradient(var(--accent),var(--accent)), linear-gradient(var(--accent),var(--accent)),
+      linear-gradient(var(--accent),var(--accent)), linear-gradient(var(--accent),var(--accent)),
+      linear-gradient(180deg,rgba(20,28,38,.96),rgba(7,10,15,.96));
+    background-size: 7px 1px, 1px 7px, 7px 1px, 1px 7px, 7px 1px, 1px 7px, 7px 1px, 1px 7px, auto;
+    background-position: left 2px top 2px, left 2px top 2px, right 2px top 2px, right 2px top 2px,
+      left 2px bottom 2px, left 2px bottom 2px, right 2px bottom 2px, right 2px bottom 2px, 0 0;
+    background-repeat: no-repeat}
   .actionbar .rows{display:grid;grid-template-columns:repeat(12,36px);gap:4px}
-  .slot{position:relative;width:36px;height:36px;border:1px solid #3a3428;background:radial-gradient(circle at 50% 40%,#191b22,#07080c);overflow:hidden}
+  .slot{position:relative;width:36px;height:36px;border:1px solid #2c3846;background:radial-gradient(circle at 50% 40%,#18202b,#06090d);overflow:hidden;box-shadow:inset 0 1px 0 rgba(255,255,255,.06)}
+  .slot:hover{border-color:var(--accent)}
   .slot .ico{position:absolute;inset:1px;opacity:.95}
   .slot .key{position:absolute;left:3px;top:1px;font-size:9px;color:#cfc7b6;text-shadow:0 1px 1px #000}
   .slot .cnt{position:absolute;right:3px;bottom:1px;font-size:11px;font-weight:700;text-shadow:0 1px 2px #000}
@@ -150,7 +178,7 @@
   .slider .top{display:flex}
   .slider .top .val{margin-left:auto;color:var(--accent);font-size:11px}
   .track{position:relative;height:4px;background:#20232b}
-  .track i{position:absolute;left:0;top:0;bottom:0;background:linear-gradient(90deg,#8b6b38,#d9ad52)}
+  .track i{position:absolute;left:0;top:0;bottom:0;background:linear-gradient(90deg,#5b6c80,#cddaea)}
   .track b{position:absolute;top:-5px;width:10px;height:14px;background:#3a3f4b;border:1px solid #59606f;transform:translateX(-50%)}
   .switch{width:20px;height:20px;border:1px solid var(--border);background:#07080c;position:relative;margin-left:auto}
   .switch.on{border-color:var(--accent)}
@@ -162,6 +190,7 @@
   /* ---------- labels ---------- */
   .brand{position:absolute;left:26px;top:22px;z-index:9;font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:#8d8574}
   .brand b{color:var(--accent);font-weight:600}
+  .brand img.mark{width:22px;height:22px;vertical-align:-6px;margin-right:8px;opacity:.92}
   .watermark{position:absolute;right:26px;bottom:22px;z-index:9;font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:#6d675a}
   .controls{position:absolute;left:26px;bottom:22px;z-index:20;display:flex;gap:8px;font-size:12px}
   .controls button{background:#12141a;color:#cfc7b6;border:1px solid var(--border);padding:6px 12px;font:inherit;cursor:pointer}
@@ -205,7 +234,7 @@
     <div class="grain"></div>
   </div>
 
-  <div class="brand">Forever<b>HUD</b> · vista previa del diseño</div>
+  <div class="brand"><img src="logo.svg" class="mark" alt="ForeverHUD"><span>Forever<b>HUD</b> · vista previa del diseño</span></div>
   <div class="watermark">datos simulados · no es una captura del juego</div>
 
   <!-- target cast bar -->
@@ -215,6 +244,7 @@
       <div class="icon"></div>
       <div class="label">Descarga de sombra <span class="hint">· interrumpible</span></div>
       <div class="time">1.4</div>
+      <i class="spark" style="left:62%"></i>
     </div>
   </div>
 
@@ -271,6 +301,7 @@
       <div class="icon"></div>
       <div class="label">Bola de fuego</div>
       <div class="time">1.3</div>
+      <i class="spark" style="left:46%"></i>
     </div>
   </div>
 
@@ -318,12 +349,13 @@
     <div class="cfg">
       <div class="cfg-head">
         <span class="cfg-title">ForeverHUD</span>
-        <span class="cfg-sub">v1.0.0 · Default</span>
+        <span class="cfg-sub">v1.1.0 · Default</span>
         <span class="cfg-x">x</span>
       </div>
       <div class="cfg-body">
         <div class="cfg-nav">
           <div>General</div>
+          <div>Estilo</div>
           <div class="on">Unidades</div>
           <div>Lanzamientos</div>
           <div>Auras</div>
@@ -387,6 +419,7 @@
   // gentle loop on the cast bars, only for the live preview
   const fills = [...document.querySelectorAll('.castbar .fill')];
   const times = [...document.querySelectorAll('.castbar .time')];
+  const sparks = [...document.querySelectorAll('.castbar .spark')];
   let t = 0;
   if (!location.search.includes('still')) {
     setInterval(() => {
@@ -394,6 +427,7 @@
       const p = Math.min(1, t / 2.8);
       fills.forEach(f => { f.style.width = (18 + p * 74) + '%'; });
       times.forEach(x => { x.textContent = (2.8 - t).toFixed(1); });
+      sparks.forEach(s => { s.style.left = (18 + p * 74) + '%'; });
     }, 100);
   }
 </script>

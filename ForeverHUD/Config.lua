@@ -17,6 +17,7 @@ local unitEditing = "player"
 
 local SECTIONS = {
   { id = "general", label = function() return L.general end },
+  { id = "estilo", label = function() return L.estilo end },
   { id = "units", label = function() return L.units end },
   { id = "castbars", label = function() return L.castbars end },
   { id = "auras", label = function() return L.auras end },
@@ -319,6 +320,60 @@ local function BuildActionBars(parent)
   return body
 end
 
+local function BuildStyle(parent)
+  local body = NewSectionBody(parent)
+  local y = 4
+
+  y = y + AddHeader(body, y, L.preset)
+
+  local presetRow = NewRow(body, y, 30)
+  local presets = {
+    { id = "clasico", label = L.presetClassic },
+    { id = "compacto", label = L.presetCompact },
+    { id = "minimo", label = L.presetMinimal },
+  }
+  for index, preset in ipairs(presets) do
+    local button = CreateFrame("Button", nil, presetRow, "BackdropTemplate")
+    button:SetSize(150, 26)
+    button:SetPoint("LEFT", presetRow, "LEFT", (index - 1) * 160, 0)
+    ns:ApplyBackdrop(button, ns.theme.row, ns.theme.border)
+    local label = ns:CreateText(button, 11, ns.theme.text, "OUTLINE")
+    label:SetPoint("CENTER", button, "CENTER", 0, 0)
+    label:SetText(preset.label)
+    button:SetScript("OnEnter", function()
+      button:SetBackdropBorderColor(ns.theme.accent[1], ns.theme.accent[2], ns.theme.accent[3], 1)
+    end)
+    button:SetScript("OnLeave", function()
+      button:SetBackdropBorderColor(ns.theme.border[1], ns.theme.border[2], ns.theme.border[3], 1)
+    end)
+    button:SetScript("OnClick", function()
+      ns:ApplyPreset(preset.id)
+      ns.ConfigAPI.Rebuild("estilo")
+    end)
+  end
+  y = y + 36
+
+  y = y + AddChoice(body, y, L.accent, "general.accent", {
+    { value = "acero", label = L.accentSteel },
+    { value = "oro", label = L.accentGold },
+    { value = "hielo", label = L.accentIce },
+    { value = "sangre", label = L.accentBlood },
+    { value = "esmeralda", label = L.accentEmerald },
+  })
+  y = y + AddChoice(body, y, L.barTexture, "general.barTexture", {
+    { value = "smooth", label = L.textureSmooth },
+    { value = "flat", label = L.textureFlat },
+  })
+  y = y + AddToggle(body, y, L.ornaments, "general.ornaments")
+
+  local hint = ns:CreateText(body, 10, ns.theme.muted, "OUTLINE")
+  hint:SetPoint("TOPLEFT", body, "TOPLEFT", 0, -(y + 8))
+  hint:SetWidth(CONTENT_WIDTH)
+  hint:SetJustifyH("LEFT")
+  hint:SetText(L.styleHint)
+  return body
+end
+
 local function BuildProfiles(parent)
   local body = NewSectionBody(parent)
   local y = 4
@@ -471,6 +526,7 @@ end
 
 local BUILDERS = {
   general = BuildGeneral,
+  estilo = BuildStyle,
   units = BuildUnits,
   castbars = BuildCastbars,
   auras = BuildAuras,

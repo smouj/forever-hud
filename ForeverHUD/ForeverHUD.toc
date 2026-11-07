@@ -4,7 +4,7 @@
 ## Notes: Dark-fantasy customizable HUD for World of Warcraft: Forever.
 ## Notes-esES: HUD personalizable de fantasia oscura para World of Warcraft: Forever.
 ## Author: SMOUJ
-## Version: 1.0.0
+## Version: 1.1.0
 ## SavedVariables: ForeverHUDDB
 ## IconTexture: Interface\AddOns\ForeverHUD\Media\icon.tga
 ## X-Website: https://github.com/smouj/forever-hud

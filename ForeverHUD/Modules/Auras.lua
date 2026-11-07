@@ -148,6 +148,7 @@ local function ApplyGroup(group, cfg, positionPrefix)
 
   for index, button in ipairs(group.buttons) do
     button:SetSize(size, size)
+    ns:ApplyBackdrop(button, { 0.02, 0.02, 0.03, 0.85 }, ns.theme.border)
     button:ClearAllPoints()
     local column = (index - 1) % perRow
     local row = math.floor((index - 1) / perRow)
@@ -199,7 +200,7 @@ local function RefreshGroup(group)
       else
         button.count:SetText("")
       end
-      local color = DEBUFF_COLORS[aura.dispelName or ""] or ns.theme.border
+      local color = DEBUFF_COLORS[aura.dispelName or ""] or ns.theme.accent2
       button:SetBackdropBorderColor(color[1], color[2], color[3], 1)
       if (aura.duration or 0) > 0 and (aura.expirationTime or 0) > 0 then
         local start = aura.expirationTime - aura.duration

@@ -3,7 +3,7 @@
 local ADDON, ns = ...
 
 ns.ADDON = ADDON
-ns.version = "1.0.0"
+ns.version = "1.1.0"
 ns.path = "Interface\\AddOns\\" .. ADDON .. "\\"
 
 ns.modules = {}
@@ -13,20 +13,61 @@ ns.errors = {}
 ns.preview = { active = false, units = {}, auras = {} }
 
 ns.theme = {
-  bg       = { 0.043, 0.047, 0.063, 0.94 },
-  bgSolid  = { 0.059, 0.063, 0.082, 1.00 },
-  panel    = { 0.082, 0.086, 0.110, 0.97 },
-  row      = { 0.110, 0.114, 0.141, 1.00 },
-  border   = { 0.290, 0.239, 0.161, 1.00 },
-  borderHi = { 0.545, 0.420, 0.220, 1.00 },
-  accent   = { 0.851, 0.678, 0.322, 1.00 },
-  accent2  = { 0.584, 0.396, 0.184, 1.00 },
-  text     = { 0.937, 0.918, 0.867, 1.00 },
-  muted    = { 0.596, 0.580, 0.541, 1.00 },
+  bg       = { 0.043, 0.055, 0.078, 0.95 },
+  bgSolid  = { 0.055, 0.070, 0.098, 1.00 },
+  panel    = { 0.063, 0.078, 0.105, 0.97 },
+  row      = { 0.090, 0.108, 0.140, 1.00 },
+  border   = { 0.227, 0.286, 0.361, 1.00 },
+  borderHi = { 0.494, 0.576, 0.667, 1.00 },
+  accent   = { 0.804, 0.859, 0.925, 1.00 },
+  accent2  = { 0.494, 0.576, 0.667, 1.00 },
+  text     = { 0.937, 0.945, 0.957, 1.00 },
+  muted    = { 0.588, 0.635, 0.694, 1.00 },
   danger   = { 0.851, 0.243, 0.220, 1.00 },
   ok       = { 0.373, 0.780, 0.443, 1.00 },
   shadow   = { 0.000, 0.000, 0.000, 0.85 },
 }
+
+-- Accent palettes: the whole HUD recolors from one choice in the panel.
+ns.palettes = {
+  acero = {
+    accent = { 0.804, 0.859, 0.925, 1.00 }, accent2 = { 0.494, 0.576, 0.667, 1.00 },
+    border = { 0.227, 0.286, 0.361, 1.00 }, borderHi = { 0.494, 0.576, 0.667, 1.00 },
+  },
+  oro = {
+    accent = { 0.851, 0.678, 0.322, 1.00 }, accent2 = { 0.584, 0.396, 0.184, 1.00 },
+    border = { 0.290, 0.239, 0.161, 1.00 }, borderHi = { 0.545, 0.420, 0.220, 1.00 },
+  },
+  hielo = {
+    accent = { 0.616, 0.878, 1.000, 1.00 }, accent2 = { 0.267, 0.545, 0.700, 1.00 },
+    border = { 0.157, 0.302, 0.396, 1.00 }, borderHi = { 0.435, 0.706, 0.855, 1.00 },
+  },
+  sangre = {
+    accent = { 0.910, 0.494, 0.427, 1.00 }, accent2 = { 0.545, 0.212, 0.176, 1.00 },
+    border = { 0.325, 0.157, 0.137, 1.00 }, borderHi = { 0.694, 0.353, 0.302, 1.00 },
+  },
+  esmeralda = {
+    accent = { 0.565, 0.878, 0.678, 1.00 }, accent2 = { 0.239, 0.478, 0.325, 1.00 },
+    border = { 0.145, 0.298, 0.204, 1.00 }, borderHi = { 0.376, 0.690, 0.494, 1.00 },
+  },
+}
+
+function ns:UpdateTheme()
+  local key = "acero"
+  if ns.db then key = ns:Get("general.accent", "acero") end
+  local palette = ns.palettes[key] or ns.palettes.acero
+  ns.theme.accent = palette.accent
+  ns.theme.accent2 = palette.accent2
+  ns.theme.border = palette.border
+  ns.theme.borderHi = palette.borderHi
+end
+
+function ns:BarTexture()
+  local choice = "smooth"
+  if ns.db then choice = ns:Get("general.barTexture", "smooth") end
+  if choice == "flat" then return ns.path .. "Media\\bar-flat" end
+  return ns.path .. "Media\\bar-smooth"
+end
 
 ns.font = (STANDARD_TEXT_FONT) or "Fonts\\FRIZQT__.TTF"
 
@@ -90,6 +131,48 @@ end
 -- frames and widgets
 -- ---------------------------------------------------------------------------
 
+function ns:AddCornerAccents(frame, inset)
+  if frame.__accents then return frame.__accents end
+  inset = inset or 3
+  local length = 7
+  local corners = {
+    { "TOPLEFT", 1, -1 },
+    { "TOPRIGHT", -1, -1 },
+    { "BOTTOMLEFT", 1, 1 },
+    { "BOTTOMRIGHT", -1, 1 },
+  }
+  local list = {}
+  for _, corner in ipairs(corners) do
+    local point, sx, sy = corner[1], corner[2], corner[3]
+    local horizontal = frame:CreateTexture(nil, "OVERLAY", nil, 7)
+    horizontal:SetSize(length, 1)
+    horizontal:SetPoint(point, frame, point, sx * inset, sy * inset)
+    local vertical = frame:CreateTexture(nil, "OVERLAY", nil, 7)
+    vertical:SetSize(1, length)
+    vertical:SetPoint(point, frame, point, sx * inset, sy * inset)
+    list[#list + 1] = horizontal
+    list[#list + 1] = vertical
+  end
+  frame.__accents = list
+  return list
+end
+
+function ns:UpdateAccents(frame)
+  local list = frame.__accents
+  if not list then return end
+  local color = ns.theme.accent
+  local show = true
+  if ns.db then show = ns:Get("general.ornaments", true) end
+  for index = 1, #list do
+    if show then
+      list[index]:SetColorTexture(color[1], color[2], color[3], 0.85)
+      list[index]:Show()
+    else
+      list[index]:Hide()
+    end
+  end
+end
+
 function ns:ApplyBackdrop(frame, background, border)
   if not frame or not frame.SetBackdrop then return end
   local bg = background or ns.theme.bg
@@ -114,7 +197,7 @@ end
 function ns:CreateBar(parent, width, height, reverse)
   local bar = CreateFrame("StatusBar", nil, parent)
   bar:SetSize(width, height)
-  bar:SetStatusBarTexture("Interface\\Buttons\\WHITE8X8")
+  bar:SetStatusBarTexture(ns:BarTexture())
   bar:SetStatusBarColor(0.35, 0.62, 0.35, 1)
   bar:SetMinMaxValues(0, 1)
   bar:SetValue(1)
@@ -203,6 +286,9 @@ function ns:DefaultProfile()
       hideBlizzard = false,
       language = "auto",
       loginMessage = true,
+      accent = "acero",
+      barTexture = "smooth",
+      ornaments = true,
     },
     units = {
       player       = unitDefaults("CENTER", 0, -176, 286, 46),
@@ -381,6 +467,91 @@ function ns:ResetProfile(name)
     ns:ApplyAll()
     ns:RefreshAll()
   end
+  return true
+end
+
+-- Layout presets: one click repositions and resizes the whole HUD.
+ns.presets = {
+  clasico = {
+    labelKey = "presetClassic",
+    values = {
+      ["general.scale"] = 1,
+      ["general.combatFade"] = true,
+      ["units.player.enabled"] = true,
+      ["units.player.width"] = 286, ["units.player.height"] = 46, ["units.player.y"] = -176,
+      ["units.target.enabled"] = true,
+      ["units.target.width"] = 286, ["units.target.height"] = 46, ["units.target.y"] = 182,
+      ["units.focus.enabled"] = true,
+      ["units.focus.width"] = 190, ["units.focus.height"] = 38, ["units.focus.x"] = -430, ["units.focus.y"] = 182,
+      ["units.pet.enabled"] = true,
+      ["units.pet.width"] = 160, ["units.pet.height"] = 32, ["units.pet.x"] = 380, ["units.pet.y"] = -300,
+      ["units.targettarget.enabled"] = true,
+      ["units.targettarget.width"] = 132, ["units.targettarget.height"] = 22, ["units.targettarget.y"] = 238,
+      ["castbars.enabled"] = true, ["castbars.playerEnabled"] = true, ["castbars.targetEnabled"] = true,
+      ["castbars.width"] = 286, ["castbars.height"] = 20,
+      ["castbars.playerY"] = -222, ["castbars.targetY"] = 222,
+      ["auras.enabled"] = true, ["auras.buffs"] = true, ["auras.debuffs"] = true, ["auras.targetDebuffs"] = true,
+      ["auras.size"] = 32, ["auras.perRow"] = 10, ["auras.maxAuras"] = 24,
+      ["auras.buffY"] = -120, ["auras.debuffY"] = -268, ["auras.targetY"] = 132,
+      ["actionbars.enabled"] = true, ["actionbars.rows"] = 2, ["actionbars.buttonsPerRow"] = 12,
+      ["actionbars.buttonSize"] = 36, ["actionbars.spacing"] = 4, ["actionbars.y"] = -342,
+    },
+  },
+  compacto = {
+    labelKey = "presetCompact",
+    values = {
+      ["general.scale"] = 0.9,
+      ["general.combatFade"] = true,
+      ["units.player.enabled"] = true,
+      ["units.player.width"] = 240, ["units.player.height"] = 42, ["units.player.y"] = -150,
+      ["units.target.enabled"] = true,
+      ["units.target.width"] = 240, ["units.target.height"] = 42, ["units.target.y"] = 156,
+      ["units.focus.enabled"] = true,
+      ["units.focus.width"] = 170, ["units.focus.height"] = 34, ["units.focus.x"] = -360, ["units.focus.y"] = 156,
+      ["units.pet.enabled"] = true,
+      ["units.pet.width"] = 140, ["units.pet.height"] = 28, ["units.pet.x"] = 330, ["units.pet.y"] = -260,
+      ["units.targettarget.enabled"] = true,
+      ["units.targettarget.width"] = 116, ["units.targettarget.height"] = 20, ["units.targettarget.y"] = 200,
+      ["castbars.enabled"] = true, ["castbars.width"] = 240, ["castbars.height"] = 18,
+      ["castbars.playerY"] = -190, ["castbars.targetY"] = 190,
+      ["auras.enabled"] = true, ["auras.buffs"] = true, ["auras.debuffs"] = true, ["auras.targetDebuffs"] = true,
+      ["auras.size"] = 28, ["auras.perRow"] = 12, ["auras.maxAuras"] = 24,
+      ["auras.buffY"] = -104, ["auras.debuffY"] = -230, ["auras.targetY"] = 114,
+      ["actionbars.enabled"] = true, ["actionbars.rows"] = 2, ["actionbars.buttonsPerRow"] = 12,
+      ["actionbars.buttonSize"] = 32, ["actionbars.spacing"] = 3, ["actionbars.y"] = -300,
+    },
+  },
+  minimo = {
+    labelKey = "presetMinimal",
+    values = {
+      ["general.scale"] = 1,
+      ["general.combatFade"] = false,
+      ["units.player.enabled"] = true,
+      ["units.player.width"] = 260, ["units.player.height"] = 40, ["units.player.y"] = -150,
+      ["units.target.enabled"] = true,
+      ["units.target.width"] = 260, ["units.target.height"] = 40, ["units.target.y"] = 156,
+      ["units.focus.enabled"] = false,
+      ["units.pet.enabled"] = false,
+      ["units.targettarget.enabled"] = false,
+      ["castbars.enabled"] = true, ["castbars.width"] = 260, ["castbars.height"] = 18,
+      ["castbars.playerY"] = -186, ["castbars.targetY"] = 192,
+      ["auras.enabled"] = false, ["auras.buffs"] = false, ["auras.debuffs"] = false, ["auras.targetDebuffs"] = false,
+      ["actionbars.enabled"] = true, ["actionbars.rows"] = 1, ["actionbars.buttonsPerRow"] = 12,
+      ["actionbars.buttonSize"] = 34, ["actionbars.spacing"] = 3, ["actionbars.y"] = -290,
+    },
+  },
+}
+
+function ns:ApplyPreset(id)
+  local preset = ns.presets[id]
+  if not preset or not ns.db then return false end
+  for path, value in pairs(preset.values) do
+    ns:Set(path, value)
+  end
+  ns:ApplyAll()
+  ns:RefreshAll()
+  local label = ns.L[preset.labelKey] or id
+  ns:Print(string.format(ns.L.presetApplied, label))
   return true
 end
 
@@ -602,6 +773,7 @@ function ns:Initialize()
 end
 
 function ns:ApplyAll()
+  ns:UpdateTheme()
   for _, name in ipairs(ns.moduleOrder) do
     ns:SafeCall(name, "Apply")
   end
