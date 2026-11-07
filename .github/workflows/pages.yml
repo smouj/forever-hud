@@ -28,7 +28,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Configurar Pages
-        uses: actions/configure-pages@v5
+        uses: actions/configure-pages@v6
 
       - name: Empaquetar la vista previa
         uses: actions/upload-pages-artifact@v3
