@@ -1,0 +1,37 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  lua:
+    name: Lua 5.1 - sintaxis, pruebas y paquete
+    runs-on: ubuntu-latest
+    steps:
+      - name: Descargar el repositorio
+        uses: actions/checkout@v4
+
+      - name: Instalar Lua 5.1 y zip
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y lua5.1 zip
+
+      - name: Comprobar sintaxis
+        run: bash scripts/check.sh
+
+      - name: Ejecutar las pruebas headless
+        run: lua5.1 tests/run_tests.lua
+
+      - name: Construir el paquete instalable
+        run: bash scripts/build.sh
+
+      - name: Resumen del paquete
+        run: |
+          ls -la dist
+          cat dist/SHA256SUMS

@@ -1,0 +1,40 @@
+name: Pages
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "preview/**"
+      - ".github/workflows/pages.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    name: Publicar la vista previa
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+    steps:
+      - name: Descargar el repositorio
+        uses: actions/checkout@v4
+
+      - name: Configurar Pages
+        uses: actions/configure-pages@v5
+
+      - name: Empaquetar la vista previa
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: preview
+
+      - name: Desplegar
+        id: deployment
+        uses: actions/deploy-pages@v4

@@ -1,0 +1,118 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="320" viewBox="0 0 1280 320" role="img" aria-label="ForeverHUD - HUD de fantasia oscura para World of Warcraft: Forever">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#0b0d13"/>
+      <stop offset="0.55" stop-color="#0e1017"/>
+      <stop offset="1" stop-color="#06070b"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="0.72" cy="0.42" r="0.62">
+      <stop offset="0" stop-color="#d9ad52" stop-opacity="0.20"/>
+      <stop offset="1" stop-color="#d9ad52" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="gold" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#f7e0ab"/>
+      <stop offset="0.45" stop-color="#d9ad52"/>
+      <stop offset="1" stop-color="#966f2f"/>
+    </linearGradient>
+    <linearGradient id="hp" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#ffb0d2"/>
+      <stop offset="0.5" stop-color="#f58cba"/>
+      <stop offset="1" stop-color="#8c3f5f"/>
+    </linearGradient>
+    <linearGradient id="tp" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#e05648"/>
+      <stop offset="0.5" stop-color="#c23a2f"/>
+      <stop offset="1" stop-color="#5c1a14"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="1280" height="320" fill="url(#bg)"/>
+  <rect width="1280" height="320" fill="url(#glow)"/>
+
+  <g stroke="#d9ad52" stroke-opacity="0.18" fill="none">
+    <circle cx="1090" cy="160" r="132"/>
+    <circle cx="1090" cy="160" r="96"/>
+    <path d="M1090 18 L1090 302 M948 160 L1232 160 M990 60 L1190 260 M1190 60 L990 260"/>
+  </g>
+  <g stroke="#d9ad52" stroke-opacity="0.4" stroke-width="1">
+    <path d="M0 300 H1280" stroke-opacity="0.15"/>
+    <path d="M40 40 h26 M53 27 v26 M1204 268 h26 M1217 255 v26"/>
+  </g>
+
+  <g transform="translate(58,52)">
+    <polygon points="112,0 224,48 224,172 112,292 0,172 0,48" fill="#0d0f15" stroke="#d9ad52" stroke-width="5"/>
+    <polygon points="112,22 202,58 202,164 112,262 22,164 22,58" fill="#101218" stroke="#4a3d29" stroke-width="2"/>
+    <g stroke="url(#gold)" stroke-width="9" stroke-linecap="round" fill="none">
+      <path d="M112 74 V198"/>
+      <path d="M112 100 L82 126"/>
+      <path d="M112 100 L142 126"/>
+      <path d="M112 156 L86 178"/>
+      <path d="M112 156 L138 178"/>
+    </g>
+    <g transform="translate(112,214)">
+      <polygon points="0,-22 20,0 0,22 -20,0" fill="#7a5c2f" stroke="#e7c47e" stroke-width="2.5"/>
+      <polygon points="0,-12 10,0 0,12 -10,0" fill="#f3d79a"/>
+    </g>
+  </g>
+
+  <text x="316" y="152" font-family="DejaVu Serif,Georgia,serif" font-size="74" font-weight="700" fill="url(#gold)" letter-spacing="1">ForeverHUD</text>
+  <text x="318" y="190" font-family="DejaVu Sans,Segoe UI,Arial,sans-serif" font-size="19" fill="#9a9284">HUD de fantasia oscura para World of Warcraft: Forever</text>
+
+  <g font-family="DejaVu Sans,Segoe UI,Arial,sans-serif" font-size="13">
+    <g transform="translate(318,220)">
+      <rect width="150" height="30" rx="3" fill="#14161d" stroke="#4a3d29"/>
+      <text x="75" y="20" text-anchor="middle" fill="#d9ad52">Interface 16001</text>
+    </g>
+    <g transform="translate(480,220)">
+      <rect width="96" height="30" rx="3" fill="#14161d" stroke="#4a3d29"/>
+      <text x="48" y="20" text-anchor="middle" fill="#cfc7b6">Lua 5.1</text>
+    </g>
+    <g transform="translate(588,220)">
+      <rect width="160" height="30" rx="3" fill="#14161d" stroke="#4a3d29"/>
+      <text x="80" y="20" text-anchor="middle" fill="#cfc7b6">Sin dependencias</text>
+    </g>
+    <g transform="translate(760,220)">
+      <rect width="76" height="30" rx="3" fill="#14161d" stroke="#4a3d29"/>
+      <text x="38" y="20" text-anchor="middle" fill="#cfc7b6">MIT</text>
+    </g>
+  </g>
+
+  <g transform="translate(1010,74)">
+    <rect width="230" height="30" fill="#0a0b10" stroke="#4a3d29"/>
+    <rect x="1" y="1" width="228" height="28" fill="#05060a"/>
+    <rect x="1" y="1" width="139" height="28" fill="url(#tp)"/>
+    <rect x="1" y="1" width="228" height="1" fill="#ffffff" fill-opacity="0.15"/>
+    <text x="8" y="20" font-family="DejaVu Serif,Georgia,serif" font-size="12" fill="#f3eee2">Senor del Foso</text>
+    <text x="222" y="20" text-anchor="end" font-family="DejaVu Sans,Arial,sans-serif" font-size="11" fill="#f3eee2">61%</text>
+
+    <g transform="translate(0,44)">
+      <rect width="230" height="14" fill="#0a0b10" stroke="#7a5c2f"/>
+      <rect x="1" y="1" width="130" height="12" fill="#c79a3d"/>
+      <text x="8" y="11" font-family="DejaVu Sans,Arial,sans-serif" font-size="9" fill="#f7efd9">Bola de fuego</text>
+    </g>
+
+    <g transform="translate(0,74)">
+      <rect width="230" height="30" fill="#0a0b10" stroke="#4a3d29"/>
+      <rect x="1" y="1" width="228" height="28" fill="#05060a"/>
+      <rect x="1" y="1" width="185" height="28" fill="url(#hp)"/>
+      <rect x="1" y="1" width="228" height="1" fill="#ffffff" fill-opacity="0.15"/>
+      <text x="8" y="20" font-family="DejaVu Serif,Georgia,serif" font-size="12" fill="#f3eee2">Aelric</text>
+      <text x="222" y="20" text-anchor="end" font-family="DejaVu Sans,Arial,sans-serif" font-size="11" fill="#f3eee2">81%</text>
+    </g>
+
+    <g transform="translate(0,116)">
+      <rect width="34" height="34" fill="#0a0b10" stroke="#4a3d29"/>
+      <rect x="1" y="1" width="32" height="32" fill="#2b5ca8"/>
+      <rect x="38" y="0" width="34" height="34" fill="#0a0b10" stroke="#4a3d29"/>
+      <rect x="39" y="1" width="32" height="32" fill="#b8892b"/>
+      <rect x="76" y="0" width="34" height="34" fill="#0a0b10" stroke="#3d8bff"/>
+      <rect x="77" y="1" width="32" height="32" fill="#5c7fb8"/>
+    </g>
+
+    <g transform="translate(0,162)">
+      <rect width="230" height="10" fill="#05060a"/>
+      <rect x="1" y="1" width="228" height="8" fill="#05060a"/>
+      <rect x="1" y="1" width="178" height="8" fill="#2a4c9e"/>
+    </g>
+  </g>
+</svg>

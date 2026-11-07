@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512" role="img" aria-label="ForeverHUD">
+  <defs>
+    <linearGradient id="g" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#f7e0ab"/>
+      <stop offset="0.45" stop-color="#d9ad52"/>
+      <stop offset="1" stop-color="#966f2f"/>
+    </linearGradient>
+  </defs>
+  <polygon points="256,26 432,88 432,268 256,478 80,268 80,88" fill="#0d0f15" stroke="#d9ad52" stroke-width="10" stroke-linejoin="round"/>
+  <polygon points="256,60 406,110 406,258 256,438 106,258 106,110" fill="#101218" stroke="#4a3d29" stroke-width="3"/>
+  <g stroke="url(#g)" stroke-width="14" stroke-linecap="round" fill="none">
+    <path d="M256 128 V330"/>
+    <path d="M256 168 L198 212"/>
+    <path d="M256 168 L314 212"/>
+    <path d="M256 262 L208 298"/>
+    <path d="M256 262 L304 298"/>
+  </g>
+  <g transform="translate(256,380)">
+    <polygon points="0,-40 30,0 0,40 -30,0" fill="#7a5c2f" stroke="#e7c47e" stroke-width="4"/>
+    <polygon points="0,-24 18,0 0,24 -18,0" fill="#f3d79a"/>
+  </g>
+</svg>

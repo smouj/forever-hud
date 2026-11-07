@@ -1,0 +1,401 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ForeverHUD · Vista previa del diseño</title>
+<style>
+  :root{
+    --bg:#08090d;
+    --panel:#0d0e13;
+    --panel-2:#11131a;
+    --border:#4a3d29;
+    --border-hi:#8b6b38;
+    --accent:#d9ad52;
+    --text:#efeadd;
+    --muted:#98917f;
+    --hp:#f58cba;
+    --hp-dark:#8c3f5f;
+    --target:#c23a2f;
+    --target-dark:#5c1a14;
+    --power:#3b6ad4;
+    --font-ui:"DejaVu Sans","Segoe UI",Arial,sans-serif;
+    --font-name:"DejaVu Serif",Georgia,"Times New Roman",serif;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0;background:#04050a;color:var(--text);font-family:var(--font-ui)}
+  body{display:flex;align-items:center;justify-content:center;min-height:100vh}
+  #stage{position:relative;width:1600px;height:900px;overflow:hidden;background:#05060a;isolation:isolate}
+
+  /* ---------- scene ---------- */
+  .scene{position:absolute;inset:0;z-index:0}
+  .scene .sky{position:absolute;inset:0;background:
+     radial-gradient(900px 520px at 50% 18%, rgba(88,64,32,.55), transparent 70%),
+     radial-gradient(1200px 700px at 50% 108%, rgba(24,34,48,.85), transparent 72%),
+     linear-gradient(180deg,#0b0d14 0%,#0a0c12 42%,#06070b 100%);}
+  .scene .sun{position:absolute;left:50%;top:34%;width:320px;height:320px;transform:translate(-50%,-50%);
+     border-radius:50%;background:radial-gradient(circle,rgba(217,173,82,.28),rgba(217,173,82,.07) 55%,transparent 70%);
+     filter:blur(2px)}
+  .scene svg{position:absolute;inset:0;width:100%;height:100%}
+  .scene .fog{position:absolute;inset:0;background:
+     radial-gradient(700px 240px at 50% 74%, rgba(120,140,170,.10), transparent 70%),
+     linear-gradient(180deg,transparent 55%,rgba(4,5,9,.75) 100%);}
+  .scene .vignette{position:absolute;inset:0;box-shadow:inset 0 0 320px 80px rgba(0,0,0,.85)}
+  .grain{position:absolute;inset:0;opacity:.05;background-image:repeating-linear-gradient(0deg,rgba(255,255,255,.35) 0 1px,transparent 1px 3px);mix-blend-mode:overlay}
+
+  /* ---------- shared HUD chrome ---------- */
+  .hud{position:absolute;z-index:5;transform-origin:center center;filter:drop-shadow(0 6px 18px rgba(0,0,0,.55))}
+  .panel{background:linear-gradient(180deg,rgba(19,21,27,.96),rgba(9,10,14,.96));
+    border:1px solid var(--border);
+    box-shadow:inset 0 0 0 1px rgba(0,0,0,.65), inset 0 1px 0 rgba(255,255,255,.05);}
+  .unit{width:286px}
+  .unit .frame{display:flex;padding:1px;background:linear-gradient(180deg,#1b1d25,#0b0c10);border:1px solid var(--border)}
+  .unit .bars{flex:1 1 auto;min-width:0;display:flex;flex-direction:column}
+  .bar{position:relative;height:33px;background:#05060a;overflow:hidden}
+  .bar .fill{position:absolute;inset:0 auto 0 0;width:100%;}
+  .bar .gloss{position:absolute;inset:0 0 auto 0;height:45%;background:linear-gradient(180deg,rgba(255,255,255,.20),rgba(255,255,255,0))}
+  .bar .edge{position:absolute;inset:0 0 auto 0;height:1px;background:rgba(255,255,255,.22)}
+  .bar .name{position:absolute;left:8px;right:8px;top:3px}
+  .bar .name{font-family:var(--font-name);font-size:13px;letter-spacing:.02em;text-shadow:0 1px 2px #000,0 0 6px rgba(0,0,0,.8);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .bar .meta{position:absolute;left:8px;right:8px;bottom:2px;display:flex;align-items:baseline;gap:6px;font-size:10px;white-space:nowrap}
+  .bar .lvl{font-size:10px;color:var(--muted);letter-spacing:.04em;overflow:hidden;text-overflow:ellipsis}
+  .bar .hp{margin-left:auto;font-size:11px;color:#f4efe2;text-shadow:0 1px 2px #000;font-variant-numeric:tabular-nums;overflow:hidden}
+  .bar .hp em{color:var(--muted);font-style:normal;font-size:10px}
+  .unit .power{position:relative;height:7px;background:#05060a;border-top:1px solid rgba(0,0,0,.85)}
+  .unit .power .fill{position:absolute;inset:0 auto 0 0;background:linear-gradient(180deg,#5f8bf0,#2a4c9e)}
+  .unit.player .bar .fill{background:linear-gradient(180deg,#ffb0d2,var(--hp) 45%,var(--hp-dark))}
+  .unit.target .bar .fill{background:linear-gradient(180deg,#e05648,var(--target) 45%,var(--target-dark))}
+  .portrait{width:42px;flex:0 0 42px;align-self:stretch;border-right:1px solid #000;position:relative;overflow:hidden;
+    background:
+      radial-gradient(circle at 50% 34%, rgba(214,190,140,.55) 0 10%, rgba(214,190,140,0) 11%),
+      radial-gradient(ellipse 36% 22% at 50% 84%, rgba(180,155,105,.42) 0 70%, rgba(180,155,105,0) 72%),
+      linear-gradient(135deg,#241d15,#0d0b08);}
+  .portrait::after{content:"";position:absolute;inset:0;background:radial-gradient(circle at 50% 35%,rgba(217,173,82,.35),transparent 60%)}
+  .unit.no-portrait .portrait{display:none}
+
+  /* ---------- target ---------- */
+  .unit.target{left:50%;top:calc(50% - 182px);transform:translate(-50%,-50%)}
+  .unit.target .lvl{color:#d8b26a}
+
+  /* ---------- player ---------- */
+  .unit.player{left:50%;top:calc(50% + 176px);transform:translate(-50%,-50%)}
+
+  /* ---------- focus / pet ---------- */
+  .unit.focus{width:190px;left:calc(50% - 430px);top:calc(50% - 182px);transform:translate(-50%,-50%)}
+  .unit.focus .bar{height:26px}
+  .unit.focus .bar .name{font-size:11px;top:2px}
+  .unit.focus .bar .meta{bottom:1px;font-size:9px}
+  .unit.focus .bar .hp{font-size:9px}
+  .unit.pet{width:160px;left:calc(50% + 380px);top:calc(50% + 300px);transform:translate(-50%,-50%)}
+  .unit.pet .bar{height:22px}
+  .unit.pet .bar .name{font-size:10px;top:3px}
+  .unit.pet .bar .meta{bottom:1px}
+  .unit.pet .bar .hp{display:none}
+
+  /* ---------- cast bars ---------- */
+  .castbar{width:286px;height:20px;position:absolute;z-index:6}
+  .castbar .frame{position:relative;height:100%;border:1px solid var(--border-hi);background:#07080c;display:flex;align-items:center;overflow:hidden}
+  .castbar .fill{position:absolute;inset:1px auto 1px 1px;width:62%;background:linear-gradient(180deg,#f0c874,#c79a3d 55%,#7d5a1c)}
+  .castbar .fill.red{background:linear-gradient(180deg,#e07a5f,#b23a28 55%,#5f1a12)}
+  .castbar .label{position:relative;z-index:2;font-size:11px;padding-left:8px;text-shadow:0 1px 2px #000;white-space:nowrap}
+  .castbar .time{position:relative;z-index:2;margin-left:auto;padding-right:8px;font-size:11px;color:var(--accent);font-variant-numeric:tabular-nums}
+  .castbar.player{left:50%;top:calc(50% + 222px);transform:translate(-50%,-50%)}
+  .castbar.target{left:50%;top:calc(50% - 222px);transform:translate(-50%,-50%)}
+  .castbar .icon{width:18px;height:18px;margin-left:1px;position:relative;z-index:2;background:linear-gradient(135deg,#ffb347,#7d3b12);border-right:1px solid rgba(0,0,0,.6)}
+  .castbar.target .icon{background:linear-gradient(135deg,#7f5cff,#2b1a66)}
+  .hint{color:#7de08f}
+
+  /* ---------- auras ---------- */
+  .auras{position:absolute;z-index:6;display:grid;gap:4px}
+  .auras.buffs{left:50%;top:calc(50% + 120px);transform:translate(-50%,-50%);grid-template-columns:repeat(10,32px)}
+  .auras.debuffs{left:50%;top:calc(50% + 268px);transform:translate(-50%,-50%);grid-template-columns:repeat(10,34px)}
+  .auras.tdebuffs{left:50%;top:calc(50% - 132px);transform:translate(-50%,-50%);grid-template-columns:repeat(10,34px)}
+  .aura{position:relative;width:32px;height:32px;border:1px solid var(--border);background:#0a0b10;overflow:hidden}
+  .auras.debuffs .aura,.auras.tdebuffs .aura{width:34px;height:34px}
+  .aura .art{position:absolute;inset:1px}
+  .aura.magic{border-color:#3d8bff}
+  .aura.poison{border-color:#38a03a}
+  .aura.curse{border-color:#9a35ff}
+  .aura .cd{position:absolute;inset:0;background:conic-gradient(rgba(0,0,0,.72) var(--sweep,120deg),transparent 0)}
+  .aura .stk{position:absolute;right:2px;bottom:1px;font-size:11px;font-weight:700;text-shadow:0 1px 2px #000}
+  .aura .dur{position:absolute;left:0;right:0;bottom:-1px;text-align:center;font-size:9px;background:rgba(0,0,0,.55);color:#d8d2c4}
+
+  /* ---------- action bar ---------- */
+  .actionbar{left:50%;top:calc(50% + 342px);transform:translate(-50%,-50%);padding:6px;background:linear-gradient(180deg,rgba(14,15,20,.92),rgba(7,8,11,.92));border:1px solid var(--border)}
+  .actionbar .rows{display:grid;grid-template-columns:repeat(12,36px);gap:4px}
+  .slot{position:relative;width:36px;height:36px;border:1px solid #3a3428;background:radial-gradient(circle at 50% 40%,#191b22,#07080c);overflow:hidden}
+  .slot .ico{position:absolute;inset:1px;opacity:.95}
+  .slot .key{position:absolute;left:3px;top:1px;font-size:9px;color:#cfc7b6;text-shadow:0 1px 1px #000}
+  .slot .cnt{position:absolute;right:3px;bottom:1px;font-size:11px;font-weight:700;text-shadow:0 1px 2px #000}
+  .slot.empty{opacity:.55}
+  .slot.cooldown::after{content:"";position:absolute;inset:0;background:rgba(0,0,0,.55)}
+  .slot .sweep{position:absolute;inset:0;background:conic-gradient(rgba(0,0,0,.65) var(--sweep,80deg),transparent 0)}
+
+  /* ---------- settings panel (mock of the in-game config) ---------- */
+  .overlay{position:absolute;inset:0;z-index:30;display:none;align-items:center;justify-content:center;background:rgba(4,5,9,.62);backdrop-filter:blur(3px)}
+  .overlay.on{display:flex}
+  .cfg{width:720px;height:566px;background:linear-gradient(180deg,#14161c,#0a0b0f);border:1px solid var(--border-hi);box-shadow:0 30px 80px rgba(0,0,0,.7),inset 0 1px 0 rgba(255,255,255,.05);display:flex;flex-direction:column}
+  .cfg-head{height:64px;border-bottom:1px solid #2a2418;padding:14px 18px;position:relative}
+  .cfg-title{font-family:var(--font-name);font-size:20px;color:var(--accent);letter-spacing:.04em}
+  .cfg-sub{display:block;font-size:10px;color:var(--muted);margin-top:2px}
+  .cfg-x{position:absolute;right:12px;top:12px;width:22px;height:22px;border:1px solid var(--border);background:#161821;color:var(--muted);display:grid;place-items:center;font-size:12px}
+  .cfg-body{display:flex;flex:1;min-height:0}
+  .cfg-nav{width:168px;border-right:1px solid #2a2418;padding:14px 12px;display:flex;flex-direction:column;gap:4px}
+  .cfg-nav div{height:30px;display:flex;align-items:center;padding-left:12px;font-size:12px;color:var(--muted);border-left:2px solid transparent}
+  .cfg-nav div.on{color:var(--accent);border-left-color:var(--accent);background:rgba(217,173,82,.06)}
+  .cfg-content{flex:1;padding:16px 18px;display:flex;flex-direction:column;gap:13px}
+  .row{display:flex;align-items:center;height:24px;font-size:12px;color:var(--text)}
+  .row .val{margin-left:auto;color:var(--accent);font-size:11px}
+  .slider{display:flex;flex-direction:column;gap:5px;font-size:12px}
+  .slider .top{display:flex}
+  .slider .top .val{margin-left:auto;color:var(--accent);font-size:11px}
+  .track{position:relative;height:4px;background:#20232b}
+  .track i{position:absolute;left:0;top:0;bottom:0;background:linear-gradient(90deg,#8b6b38,#d9ad52)}
+  .track b{position:absolute;top:-5px;width:10px;height:14px;background:#3a3f4b;border:1px solid #59606f;transform:translateX(-50%)}
+  .switch{width:20px;height:20px;border:1px solid var(--border);background:#07080c;position:relative;margin-left:auto}
+  .switch.on{border-color:var(--accent)}
+  .switch.on::after{content:"";position:absolute;inset:4px;background:var(--accent)}
+  .dropdown{width:210px;height:22px;border:1px solid var(--border);background:#1a1d25;color:var(--text);font-size:11px;display:flex;align-items:center;justify-content:center;margin-left:auto}
+  .section-label{font-size:10px;letter-spacing:.16em;color:var(--accent);text-transform:uppercase;margin-top:2px}
+  .hr{height:1px;background:#2a2418}
+
+  /* ---------- labels ---------- */
+  .brand{position:absolute;left:26px;top:22px;z-index:9;font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:#8d8574}
+  .brand b{color:var(--accent);font-weight:600}
+  .watermark{position:absolute;right:26px;bottom:22px;z-index:9;font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:#6d675a}
+  .controls{position:absolute;left:26px;bottom:22px;z-index:20;display:flex;gap:8px;font-size:12px}
+  .controls button{background:#12141a;color:#cfc7b6;border:1px solid var(--border);padding:6px 12px;font:inherit;cursor:pointer}
+  .controls button[aria-pressed="true"]{border-color:var(--accent);color:var(--accent)}
+  body.still .controls{display:none}
+
+  /* compact theme */
+  #stage.compact .hud{transform:translate(-50%,-50%) scale(.86)}
+  #stage.compact .unit.focus,#stage.compact .unit.pet{opacity:.35}
+  #stage.minimal .unit.focus,#stage.minimal .unit.pet,#stage.minimal .auras.buffs,#stage.minimal .auras.debuffs,#stage.minimal .actionbar{opacity:0;pointer-events:none}
+</style>
+</head>
+<body>
+<div id="stage">
+  <div class="scene">
+    <div class="sky"></div>
+    <div class="sun"></div>
+    <svg viewBox="0 0 1600 900" preserveAspectRatio="none" aria-hidden="true">
+      <defs>
+        <linearGradient id="ridge" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stop-color="#101521"/><stop offset="1" stop-color="#05070c"/>
+        </linearGradient>
+        <linearGradient id="ridge2" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stop-color="#0c1018"/><stop offset="1" stop-color="#04050a"/>
+        </linearGradient>
+      </defs>
+      <path d="M0 640 L120 560 L230 610 L340 520 L430 585 L560 470 L680 575 L800 505 L930 590 L1060 500 L1180 570 L1300 495 L1420 585 L1520 540 L1600 600 L1600 900 L0 900 Z" fill="url(#ridge)" opacity=".95"/>
+      <path d="M0 720 L90 675 L180 700 L300 640 L420 700 L520 660 L640 715 L760 665 L880 720 L1000 668 L1120 718 L1250 670 L1380 715 L1500 675 L1600 710 L1600 900 L0 900 Z" fill="url(#ridge2)"/>
+      <g fill="#070910" opacity=".95">
+        <path d="M690 700 L700 640 L712 700 Z"/>
+        <rect x="683" y="700" width="30" height="60"/>
+        <path d="M862 705 L872 655 L882 705 Z"/>
+        <rect x="856" y="705" width="26" height="48"/>
+      </g>
+      <g stroke="#8b6b38" stroke-opacity=".35" stroke-width="2" fill="none">
+        <path d="M120 760 h60 M140 745 v30 M520 745 h80 M545 730 v30 M1180 750 h70 M1200 735 v30"/>
+      </g>
+    </svg>
+    <div class="fog"></div>
+    <div class="vignette"></div>
+    <div class="grain"></div>
+  </div>
+
+  <div class="brand">Forever<b>HUD</b> · vista previa del diseño</div>
+  <div class="watermark">datos simulados · no es una captura del juego</div>
+
+  <!-- target cast bar -->
+  <div class="hud castbar target">
+    <div class="frame">
+      <div class="fill red"></div>
+      <div class="icon"></div>
+      <div class="label">Descarga de sombra <span class="hint">· interrumpible</span></div>
+      <div class="time">1.4</div>
+    </div>
+  </div>
+
+  <!-- target -->
+  <div class="hud unit target">
+    <div class="frame">
+      <div class="portrait"></div>
+      <div class="bars">
+        <div class="bar">
+          <div class="fill" style="width:61%"></div>
+          <div class="gloss"></div><div class="edge"></div>
+          <div class="name">Señor del Foso</div>
+          <div class="meta"><span class="lvl">?? · Jefe</span><span class="hp">61% <em>· 184K / 300K</em></span></div>
+        </div>
+        <div class="power"><div class="fill" style="width:0"></div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- target debuffs -->
+  <div class="hud auras tdebuffs">
+    <div class="aura magic"><div class="art" style="background:radial-gradient(circle at 40% 35%,#ffcf6a,#c23a14 60%,#3a0d05)"></div><div class="cd" style="--sweep:150deg"></div><div class="dur">8s</div></div>
+    <div class="aura poison"><div class="art" style="background:radial-gradient(circle at 40% 35%,#b6ff7a,#2f7a1f 60%,#08210a)"></div><div class="cd" style="--sweep:250deg"></div><div class="stk">5</div><div class="dur">20s</div></div>
+    <div class="aura curse"><div class="art" style="background:radial-gradient(circle at 40% 35%,#d79aff,#5b1a9e 60%,#150525)"></div><div class="cd" style="--sweep:40deg"></div><div class="dur">30s</div></div>
+  </div>
+
+  <!-- player buffs -->
+  <div class="hud auras buffs">
+    <div class="aura"><div class="art" style="background:radial-gradient(circle at 40% 35%,#9ecbff,#2b5ca8 60%,#0a1730)"></div><div class="dur">15m</div></div>
+    <div class="aura"><div class="art" style="background:radial-gradient(circle at 40% 35%,#ffe9a8,#b8892b 60%,#3a2506)"></div><div class="dur">10m</div></div>
+    <div class="aura"><div class="art" style="background:radial-gradient(circle at 40% 35%,#cfe6ff,#5c7fb8 60%,#121b2c)"></div><div class="cd" style="--sweep:300deg"></div><div class="stk">2</div><div class="dur">12s</div></div>
+  </div>
+
+  <!-- player -->
+  <div class="hud unit player">
+    <div class="frame">
+      <div class="portrait"></div>
+      <div class="bars">
+        <div class="bar">
+          <div class="fill" style="width:81%"></div>
+          <div class="gloss"></div><div class="edge"></div>
+          <div class="name">Aelric</div>
+          <div class="meta"><span class="lvl">60</span><span class="hp">81% <em>· 8.1K / 10K</em></span></div>
+        </div>
+        <div class="power"><div class="fill" style="width:78%"></div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- player cast bar -->
+  <div class="hud castbar player">
+    <div class="frame">
+      <div class="fill" style="width:46%"></div>
+      <div class="icon"></div>
+      <div class="label">Bola de fuego</div>
+      <div class="time">1.3</div>
+    </div>
+  </div>
+
+  <!-- player debuffs -->
+  <div class="hud auras debuffs">
+    <div class="aura poison"><div class="art" style="background:radial-gradient(circle at 40% 35%,#d4ff9e,#3f8a22 60%,#0d2408)"></div><div class="cd" style="--sweep:220deg"></div><div class="stk">3</div><div class="dur">15s</div></div>
+  </div>
+
+  <!-- action bar -->
+  <div class="hud actionbar">
+    <div class="rows" id="actions"></div>
+  </div>
+
+  <!-- focus -->
+  <div class="hud unit focus no-portrait">
+    <div class="frame">
+      <div class="bars">
+        <div class="bar">
+          <div class="fill" style="width:82%;background:linear-gradient(180deg,#fff,#d9d2c2 45%,#8b8170)"></div>
+          <div class="gloss"></div><div class="edge"></div>
+          <div class="name">Sanadora Vex</div>
+          <div class="meta"><span class="lvl">60</span><span class="hp">82%</span></div>
+        </div>
+        <div class="power"><div class="fill" style="width:85%"></div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- pet -->
+  <div class="hud unit pet no-portrait">
+    <div class="frame">
+      <div class="bars">
+        <div class="bar">
+          <div class="fill" style="width:76%;background:linear-gradient(180deg,#a8e0a0,#3f8a4f 45%,#173a20)"></div>
+          <div class="gloss"></div><div class="edge"></div>
+          <div class="name">Lobo espectral</div>
+          <div class="meta"><span class="lvl">60</span></div>
+        </div>
+        <div class="power"><div class="fill" style="width:0"></div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="overlay" id="overlay">
+    <div class="cfg">
+      <div class="cfg-head">
+        <span class="cfg-title">ForeverHUD</span>
+        <span class="cfg-sub">v1.0.0 · Default</span>
+        <span class="cfg-x">x</span>
+      </div>
+      <div class="cfg-body">
+        <div class="cfg-nav">
+          <div>General</div>
+          <div class="on">Unidades</div>
+          <div>Lanzamientos</div>
+          <div>Auras</div>
+          <div>Barras de acción</div>
+          <div>Perfiles</div>
+        </div>
+        <div class="cfg-content">
+          <div class="row">Unidad a editar <span class="dropdown">Jugador</span></div>
+          <div class="row">Activado <span class="switch on"></span></div>
+          <div class="slider"><div class="top">Anchura <span class="val">286 px</span></div><div class="track"><i style="width:58%"></i><b style="left:58%"></b></div></div>
+          <div class="slider"><div class="top">Altura <span class="val">46 px</span></div><div class="track"><i style="width:37%"></i><b style="left:37%"></b></div></div>
+          <div class="row">Texto de vida <span class="dropdown">Valor y porcentaje</span></div>
+          <div class="row">Colores de clase <span class="switch on"></span></div>
+          <div class="row">Retrato <span class="switch"></span></div>
+          <div class="row">Mostrar nombre <span class="switch on"></span></div>
+          <div class="row">Mostrar nivel <span class="switch on"></span></div>
+          <div class="row">Tooltip al pasar el ratón <span class="switch"></span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="controls" id="controls">
+    <button data-theme="classic" aria-pressed="true">Clásico</button>
+    <button data-theme="compact" aria-pressed="false">Compacto</button>
+    <button data-theme="minimal" aria-pressed="false">Mínimo</button>
+  </div>
+</div>
+
+<script>
+  // 24 action slots with generated, non-Blizzard placeholder art
+  const palettes = [
+    ['#ffd479','#a35b12'],['#9ed8ff','#1d4f8c'],['#ffe9a8','#8a6716'],['#c9a4ff','#4a2380'],
+    ['#a8ffcf','#14603c'],['#ffb3a7','#7d2418'],['#d9f2ff','#2c5a72'],['#ffc7e0','#7a2750'],
+    ['#e8e2c9','#5c5641'],['#b8f0ff','#1b6b7a'],['#ffd9a8','#8a4a12'],['#cfe0ff','#2f3f7a']
+  ];
+  const rows = document.getElementById('actions');
+  for (let i = 0; i < 24; i++) {
+    const slot = document.createElement('div');
+    slot.className = 'slot' + (i === 22 ? ' empty' : '');
+    const [a, b] = palettes[i % palettes.length];
+    slot.innerHTML = '<div class="ico" style="background:radial-gradient(circle at 38% 32%,' + a + ',' + b + ' 62%,#07080c 100%)"></div>'
+      + (i < 12 ? '<div class="key">' + ((i + 1) % 10 === 0 ? Math.floor((i + 1) / 10) : (i + 1) % 10) + '</div>' : '')
+      + (i % 5 === 0 && i < 12 ? '<div class="cnt">3</div>' : '');
+    rows.appendChild(slot);
+  }
+
+  if (location.search.includes('view=settings')) {
+    document.getElementById('overlay').classList.add('on');
+    document.body.classList.add('still');
+  }
+
+  // theme switcher
+  const stage = document.getElementById('stage');
+  const buttons = [...document.querySelectorAll('#controls button')];
+  buttons.forEach(btn => btn.addEventListener('click', () => {
+    buttons.forEach(b => b.setAttribute('aria-pressed', String(b === btn)));
+    stage.className = btn.dataset.theme === 'classic' ? '' : btn.dataset.theme;
+  }));
+
+  // gentle loop on the cast bars, only for the live preview
+  const fills = [...document.querySelectorAll('.castbar .fill')];
+  const times = [...document.querySelectorAll('.castbar .time')];
+  let t = 0;
+  if (!location.search.includes('still')) {
+    setInterval(() => {
+      t = (t + 0.1) % 2.8;
+      const p = Math.min(1, t / 2.8);
+      fills.forEach(f => { f.style.width = (18 + p * 74) + '%'; });
+      times.forEach(x => { x.textContent = (2.8 - t).toFixed(1); });
+    }, 100);
+  }
+</script>
+</body>
+</html>

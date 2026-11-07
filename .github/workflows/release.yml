@@ -1,0 +1,39 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - "v*"
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    name: Paquete y release
+    runs-on: ubuntu-latest
+    steps:
+      - name: Descargar el repositorio
+        uses: actions/checkout@v4
+
+      - name: Instalar Lua 5.1 y zip
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y lua5.1 zip
+
+      - name: Verificar antes de publicar
+        run: |
+          bash scripts/check.sh
+          lua5.1 tests/run_tests.lua
+
+      - name: Construir el ZIP
+        run: bash scripts/build.sh
+
+      - name: Publicar la release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: |
+            dist/ForeverHUD-*.zip
+            dist/SHA256SUMS
+          generate_release_notes: true
+          fail_on_unmatched_files: true
